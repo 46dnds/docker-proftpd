@@ -12,4 +12,4 @@ EXPOSE 20
 RUN mkdir /ftpdata
 VOLUME ["/ftpdata"]
 
-ENTRYPOINT /launch
+ENTRYPOINT /launch.sh
