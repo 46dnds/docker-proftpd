@@ -5,12 +5,17 @@ PASSWORD=$(perl -e 'print crypt($ARGV[0], "password")' $PASSWORD)
 id -u $USERNAME &>/dev/null || useradd --shell /bin/sh --create-home --password $PASSWORD $USERNAME
 chown -R $USERNAME:$USERNAME /ftpdata
 
+mkdir /etc/proftpd/ssl
+cd /etc/proftpd/ssl
+openssl req -new -newkey rsa:4096 -key $PR_MASQ_HOST.key -out $PR_MASQ_HOST.csr -subj "/C=CA/ST=QC/L=$CSR_CITY/O=Dis/CN=$PR_MASQ_HOST"
+openssl req -new -newkey rsa:4096 -days 9365 -nodes -x509 -subj "/C=CA/ST=QC/L=$CSR_CITY/O=Dis/CN=$PR_MASQ_HOST" -keyout $PR_MASQ_HOST.key -out $PR_MASQ_HOST.cert
+
 cat > /etc/proftpd/proftpd.conf << EOF
 ServerName "tech-cl ftp server"
 DefaultRoot /ftpdata
 User root
-PassivePorts $PR_PASSIVE_PORTS
-MasqueradeAddress $PR_MASQ_IP
+PassivePorts "$PR_PASSIVE_PORTS"
+MasqueradeAddress $PR_MASQ_HOST
 RootLogin off
 ServerIdent  Off
 IdentLookups off
@@ -26,8 +31,24 @@ DenyAll
 </Limit>
 </Directory>
 </Anonymous>
+Include /etc/proftpd/tls.conf
 EOF
-cat /etc/proftpd/proftpd.conf
-chown root:root /etc/proftpd/proftpd.conf
+
+cat > /etc/proftpd/tls.conf << EOF
+<IfModule mod_tls.c>
+TLSEngine                  on
+TLSLog                     /var/log/proftpd/tls.log
+TLSProtocol TLSv1.2
+TLSCipherSuite AES128+EECDH:AES128+EDH
+TLSOptions                 NoCertRequest AllowClientRenegotiations
+TLSRSACertificateFile      /etc/proftpd/ssl/$PR_MASQ_HOST.cert
+TLSRSACertificateKeyFile   /etc/proftpd/ssl/$PR_MASQ_HOST.key
+TLSVerifyClient            off
+TLSRequired                on
+RequireValidShell          no
+</IfModule>
+EOF
+
+chown root:root /etc/proftpd/*.conf
 
 proftpd --nodaemon
