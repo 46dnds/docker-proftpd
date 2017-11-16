@@ -3,10 +3,8 @@ FROM ubuntu:16.04
 RUN apt-get update -y
 RUN apt-get install -y proftpd
 
-ADD launch.sh /launch.sh
+ADD launch /launch.sh
 RUN chmod a+x /launch.sh
-ADD proftpd.conf /etc/proftpd/proftpd.conf
-RUN chown root:root /etc/proftpd/proftpd.conf
 
 EXPOSE 21
 EXPOSE 20
@@ -14,4 +12,4 @@ EXPOSE 20
 RUN mkdir /ftpdata
 VOLUME ["/ftpdata"]
 
-ENTRYPOINT /launch.sh
+ENTRYPOINT /launch
