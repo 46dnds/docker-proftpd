@@ -10,6 +10,7 @@ RUN chown root:root /etc/proftpd/proftpd.conf
 EXPOSE 21
 EXPOSE 20
 # couple available volumes you may want to use
+RUN mkdir /ftpdata
 VOLUME ["/ftpdata"]
 
 ENTRYPOINT /launch
