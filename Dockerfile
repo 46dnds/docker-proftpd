@@ -3,7 +3,8 @@ FROM ubuntu:16.04
 RUN apt-get update -y
 RUN apt-get install -y proftpd
 
-ADD launch /launch
+ADD launch /launch.sh
+RUN chmod a+x /launch.sh
 ADD proftpd.conf /etc/proftpd/proftpd.conf
 RUN chown root:root /etc/proftpd/proftpd.conf
 
