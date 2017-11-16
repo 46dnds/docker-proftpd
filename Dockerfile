@@ -5,7 +5,6 @@ RUN apt-get install -y proftpd openssl
 
 ADD launch.sh /launch.sh
 RUN chmod a+x /launch.sh
-RUN mkdir /etc/proftpd/ssl
 
 
 EXPOSE 21
