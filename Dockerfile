@@ -5,11 +5,10 @@ RUN apt-get install -y proftpd
 
 ADD launch /launch
 ADD proftpd.conf /etc/proftpd/proftpd.conf
-RUN sudo chown root:root /etc/proftpd/proftpd.conf
+RUN chown root:root /etc/proftpd/proftpd.conf
 
 EXPOSE 21
 EXPOSE 20
-
 # couple available volumes you may want to use
 VOLUME ["/ftpdata"]
 
