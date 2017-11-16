@@ -7,8 +7,7 @@ chown -R $USERNAME:$USERNAME /ftpdata
 
 mkdir /etc/proftpd/ssl
 cd /etc/proftpd/ssl
-openssl req -new -newkey rsa:4096 -key $PR_MASQ_HOST.key -out $PR_MASQ_HOST.csr -subj "/C=CA/ST=QC/L=$CSR_CITY/O=Dis/CN=$PR_MASQ_HOST"
-openssl req -new -newkey rsa:4096 -days 9365 -nodes -x509 -subj "/C=CA/ST=QC/L=$CSR_CITY/O=Dis/CN=$PR_MASQ_HOST" -keyout $PR_MASQ_HOST.key -out $PR_MASQ_HOST.cert
+openssl req -new -newkey rsa:4096 -days 9365 -nodes -x509 -subj "/C=CA/ST=QC/L=$CSR_CITY/O=Dis/CN=$PR_MASQ_HOST" -in $PR_MASQ_HOST.csr -keyout $PR_MASQ_HOST.key -out $PR_MASQ_HOST.cert
 
 cat > /etc/proftpd/proftpd.conf << EOF
 ServerName "tech-cl ftp server"
