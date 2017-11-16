@@ -10,6 +10,7 @@ ServerName "tech-cl ftp server"
 DefaultRoot /ftpdata
 User root
 PassivePorts $PR_PASSIVE_PORTS
+MasqueradeAddress $PR_MASQ_IP
 RootLogin off
 ServerIdent  Off
 IdentLookups off
