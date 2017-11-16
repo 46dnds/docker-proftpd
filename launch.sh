@@ -9,7 +9,7 @@ cat > /etc/proftpd/proftpd.conf << EOF
 ServerName "tech-cl ftp server"
 DefaultRoot /ftpdata
 User root
-PassivePorts "$PR_PASSIVE_PORTS"
+PassivePorts $PR_PASSIVE_PORTS
 MasqueradeAddress $PR_MASQ_IP
 RootLogin off
 ServerIdent  Off
@@ -27,6 +27,7 @@ DenyAll
 </Directory>
 </Anonymous>
 EOF
+cat /etc/proftpd/proftpd.conf
 chown root:root /etc/proftpd/proftpd.conf
 
 proftpd --nodaemon
