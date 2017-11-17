@@ -3,7 +3,9 @@
 echo "Setting credentials to $USERNAME:$PASSWORD"
 PASSWORD=$(perl -e 'print crypt($ARGV[0], "password")' $PASSWORD)
 id -u $USERNAME &>/dev/null || useradd --shell /bin/sh --create-home --password $PASSWORD $USERNAME
+echo "User exists? "`id -u $USERNAME`
 chown -R $USERNAME:$USERNAME /ftpdata
+echo "chown -R $USERNAME:$USERNAME /ftpdata done."
 
 mkdir /etc/proftpd/ssl
 cd /etc/proftpd/ssl
@@ -53,5 +55,6 @@ RequireValidShell          no
 EOF
 
 chown root:root /etc/proftpd/*.conf
-
+echo "chown root:root /etc/proftpd/*.conf done."
+echo "starting service..."
 proftpd --nodaemon
