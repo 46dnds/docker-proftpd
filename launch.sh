@@ -34,6 +34,10 @@ Include /etc/proftpd/tls.conf
 EOF
 
 cat > /etc/proftpd/tls.conf << EOF
+<IfModule mod_dso.c>
+# If mod_tls was built as a shared/DSO module, load it
+LoadModule mod_tls.c
+</IfModule>
 <IfModule mod_tls.c>
 TLSEngine                  on
 TLSLog                     /var/log/proftpd/tls.log
