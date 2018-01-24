@@ -2,8 +2,11 @@
 
 echo "Setting credentials to $USERNAME:$PASSWORD"
 PASSWORD=$(perl -e 'print crypt($ARGV[0], "password")' $PASSWORD)
-echo "User exists? "`id -u $USERNAME`
-id -u $USERNAME &>/dev/null || useradd --shell /bin/sh --create-home --password $PASSWORD $USERNAME
+USR=`id -u $USERNAME &>/dev/null`
+if [ "$USR" = "" ];then
+	#echo "User exists? "`id -u $USERNAME`
+	useradd --shell /bin/sh --create-home --password $PASSWORD $USERNAME
+fi
 chown -R $USERNAME:$USERNAME /ftpdata
 echo "chown -R $USERNAME:$USERNAME /ftpdata done."
 
