@@ -2,9 +2,12 @@
 
 echo "Setting credentials to $USERNAME:$PASSWORD"
 PASSWORD=$(perl -e 'print crypt($ARGV[0], "password")' $PASSWORD)
+echo "Password hashed"
 USR=`id -u $USERNAME &>/dev/null`
+echo "exists? -> $USR"
 if [ "$USR" = "" ];then
-	#echo "User exists? "`id -u $USERNAME`
+	echo "Creating user..."
+	sleep 1
 	useradd --shell /bin/sh --create-home --password $PASSWORD $USERNAME
 fi
 chown -R $USERNAME:$USERNAME /ftpdata
